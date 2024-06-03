@@ -5,7 +5,7 @@ email: martinnkraus@gmail.com
 discord: martin_64789
 """
 
-import random
+import random, time
 
 random.seed(0)
 
@@ -101,6 +101,19 @@ def uzivatelsky_vstup_v_poradku(vstup: str) -> bool:
     else:
         return True
 
+def slovni_vyhodnoceni(pokusu: int):
+    """
+    Vrátí slovní vyhodnocení na základě počtu pokusů k dohrání hry
+    """
+    if pokusu <= 4:
+        return "amazing :-o"
+    elif pokusu <= 7:
+        return "average :-)"
+    elif pokusu <= 11:
+        return "not so good :-/"
+    else:
+        return "bad, you should train ;-)"
+
 def main():
     #generuj náhodné číslo
     tajne_cislo = generuj_nahodne_unikatni()
@@ -115,7 +128,9 @@ def main():
     #!!kontrola vstupu od uživatele
         if uzivatelsky_vstup_v_poradku(cislo_pokus):
             if cislo_pokus == tajne_cislo:
-                print(f"Correct, you've guessed the right number in {pocet_pokusu} guesses!")
+                print(f"Correct, you've guessed the right number in {pocet_pokusu} guesses!",
+                      "-" * 47,
+                      f"That's {slovni_vyhodnoceni(pocet_pokusu)}")
                 break
             else:
                 print(pocet_bulls_a_cows(tajne_cislo, cislo_pokus))

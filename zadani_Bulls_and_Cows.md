@@ -11,6 +11,7 @@ author: Petr Svetr
 email: petr.svetr@gmail.com
 discord: Petr Svetr#4490
 """
+
 import ...
 Program pozdraví užitele a vypíše úvodní text
 Program dále vytvoří tajné 4místné číslo (číslice musí být unikátní a nesmí začínat 0)
