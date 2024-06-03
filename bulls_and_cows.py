@@ -5,7 +5,7 @@ email: martinnkraus@gmail.com
 discord: martin_64789
 """
 
-import random, time
+import random, time, sys
 
 random.seed(0)
 
@@ -122,15 +122,20 @@ def main():
     pocet_pokusu = 0
     while True:
         print("-" * 47)
+        if pocet_pokusu == 0:
+            cas_start = time.time()
         pocet_pokusu += 1
     #zadej cislo
         cislo_pokus = input(">>> ")
     #!!kontrola vstupu od uživatele
         if uzivatelsky_vstup_v_poradku(cislo_pokus):
             if cislo_pokus == tajne_cislo:
+                vysledny_cas = format(time.time() - cas_start, "mm:ss")
                 print(f"Correct, you've guessed the right number in {pocet_pokusu} guesses!",
                       "-" * 47,
-                      f"That's {slovni_vyhodnoceni(pocet_pokusu)}")
+                      f"That's {slovni_vyhodnoceni(pocet_pokusu)}",
+                      f"You won in time {vysledny_cas}",
+                      sep="\n")
                 break
             else:
                 print(pocet_bulls_a_cows(tajne_cislo, cislo_pokus))
