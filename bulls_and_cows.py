@@ -10,6 +10,7 @@ from datetime import date
 
 random.seed(0)
 
+
 def pretty_time_delta(seconds: float) -> str:
     """
     Vrátí naformátovaný čas ve stringu, vstup v sekundách
@@ -28,7 +29,7 @@ def pretty_time_delta(seconds: float) -> str:
     else:
         return '%s%ds' % (sign_string, seconds)
 
-def zaloguj_vysledek(log_cesta: str, uzivatel: str, datum: str, pocet_pokusu: int, cas: float)
+def zaloguj_vysledek(log_cesta: str, uzivatel: str, datum: str, pocet_pokusu: int, cas: float):
     """
     Zapíše statistky ze hry do logu
     """
@@ -147,33 +148,35 @@ def slovni_vyhodnoceni(pokusu: int):
 def main():
     #generuj náhodné číslo
     tajne_cislo = generuj_nahodne_unikatni()
+    print(tajne_cislo)
     #uvítej uživatele
     uvitani()
     pocet_pokusu = 0
     while True:
-        print("-" * 47)
-        if pocet_pokusu == 0:
-            cas_start = time.time()
-        pocet_pokusu += 1
-    #zadej cislo
-        cislo_pokus = input(">>> ")
-    #!!kontrola vstupu od uživatele
-        if uzivatelsky_vstup_v_poradku(cislo_pokus):
-            if cislo_pokus == tajne_cislo:
-                vysledny_cas = time.time() - cas_start
-                vysledny_cas_formated = pretty_time_delta(vysledny_cas)
-                print(f"Correct, you've guessed the right number in {pocet_pokusu} guesses!",
-                      "-" * 47,
-                      f"That's {slovni_vyhodnoceni(pocet_pokusu)}",
-                      f"You won in time {vysledny_cas_formated}",
-                      sep="\n")
-                uzivatel = input("Please input your username to log your effort :-) : ")
-                zaloguj_vysledek(os.getcwd(), uzivatel, date.today(), pocet_pokusu, vysledny_cas_formated)
-                break
-            else:
-                print(pocet_bulls_a_cows(tajne_cislo, cislo_pokus)) #pocet_bulls_a_cows
-
-
+        while True:
+            print("-" * 47)
+            if pocet_pokusu == 0:
+                cas_start = time.time()
+            pocet_pokusu += 1
+        #zadej cislo
+            cislo_pokus = input(">>> ")
+        #!!kontrola vstupu od uživatele
+            if uzivatelsky_vstup_v_poradku(cislo_pokus):
+                if cislo_pokus == tajne_cislo:
+                    vysledny_cas = time.time() - cas_start
+                    vysledny_cas_formated = pretty_time_delta(vysledny_cas)
+                    print(f"Correct, you've guessed the right number in {pocet_pokusu} guesses!",
+                        "-" * 47,
+                        f"That's {slovni_vyhodnoceni(pocet_pokusu)}",
+                        f"You won in time {vysledny_cas_formated}",
+                        sep="\n")
+                    uzivatel = input("Please input your username to log your effort :-) : ")
+                    zaloguj_vysledek(os.getcwd(), uzivatel, date.today(), pocet_pokusu, vysledny_cas_formated)
+                    break
+                else:
+                    print(pocet_bulls_a_cows(tajne_cislo, cislo_pokus)) #pocet_bulls_a_cows
+        if not (input("Would you like to to play again? [y]yes, [n]no: ").lower()) == "y":
+            break
 
 
 if __name__ == "__main__":
