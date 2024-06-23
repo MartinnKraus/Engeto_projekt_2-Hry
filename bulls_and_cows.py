@@ -5,7 +5,8 @@ email: martinnkraus@gmail.com
 discord: martin_64789
 """
 
-import random, time
+import random, time, os, csv
+from datetime import date
 
 random.seed(0)
 
@@ -27,7 +28,17 @@ def pretty_time_delta(seconds: float) -> str:
     else:
         return '%s%ds' % (sign_string, seconds)
 
-
+def zaloguj_vysledek(log_cesta: str, uzivatel: str, datum: str, pocet_pokusu: int, cas: float)
+    """
+    Zapíše statistky ze hry do logu
+    """
+    with open(os.path.join(log_cesta + "log_bulls_and_cows"), mode="w+") as log_file:
+        zapisovac = csv.writer(log_file)
+        if not (log_file.readline()[:5] == "datum"):   #test na existenci hlavičky
+            zapisovac.writerow(("datum", "uzivatel", "pocet_pokusu", "cas"))
+        zapisovac.writerow((datum, uzivatel, pocet_pokusu, cas))
+        
+#třeba doladit
 def generuj_nahodne_unikatni() -> str:
     """
     Generuje náhodné 4místné číslo dle kritérií, kvůli kontrole v datovém formátu str:
@@ -149,19 +160,20 @@ def main():
     #!!kontrola vstupu od uživatele
         if uzivatelsky_vstup_v_poradku(cislo_pokus):
             if cislo_pokus == tajne_cislo:
-                vysledny_cas = format(time.time() - cas_start, "mm:ss")
+                vysledny_cas = time.time() - cas_start
+                vysledny_cas_formated = pretty_time_delta(vysledny_cas)
                 print(f"Correct, you've guessed the right number in {pocet_pokusu} guesses!",
                       "-" * 47,
                       f"That's {slovni_vyhodnoceni(pocet_pokusu)}",
-                      f"You won in time {vysledny_cas}",
+                      f"You won in time {vysledny_cas_formated}",
                       sep="\n")
+                uzivatel = input("Please input your username to log your effort :-) : ")
+                zaloguj_vysledek(os.getcwd(), uzivatel, date.today(), pocet_pokusu, vysledny_cas_formated)
                 break
             else:
-                print(pocet_bulls_a_cows(tajne_cislo, cislo_pokus))
+                print(pocet_bulls_a_cows(tajne_cislo, cislo_pokus)) #pocet_bulls_a_cows
 
-                #pocet_bulls_a_cows
 
-    #vyhodnoť číslo, pokud se neshoduje, porovnej bulls and cows
 
 
 if __name__ == "__main__":
