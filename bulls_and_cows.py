@@ -33,7 +33,8 @@ def zaloguj_vysledek(log_cesta: str, uzivatel: str, datum: str, pocet_pokusu: in
     """
     Zapíše statistky ze hry do logu
     """
-    with open(os.path.join(log_cesta + "log_bulls_and_cows"), mode="w+") as log_file:
+    with open(os.path.join(log_cesta + "log_bulls_and_cows.csv"), mode="a+") as log_file:
+        a = os.path.join(log_cesta + "log_bulls_and_cows")
         zapisovac = csv.writer(log_file)
         if not (log_file.readline()[:5] == "datum"):   #test na existenci hlavičky
             zapisovac.writerow(("datum", "uzivatel", "pocet_pokusu", "cas"))
@@ -58,8 +59,23 @@ def generuj_nahodne_unikatni() -> str:
         dostupna_cisla.remove(vybrane_cislo)
     return cislo_vystup
 
-def uvitani():
-    print(
+def uvitani(pocet_her):
+    """
+    Zobrazí uvítaní
+    True pro novou hru, False pro opakování
+    """
+    if pocet_her:
+                """-----------------------------------------------
+I've generated a new random 4 digit number for you.
+Rules for the number:
+    - 4 digits number
+    - Doesn't begin with zero
+    - Only unique digits
+Let's play a bulls and cows game.
+-----------------------------------------------
+Enter a number:"""
+    else:
+        print(
         """Hi there!
 -----------------------------------------------
 I've generated a random 4 digit number for you.
@@ -146,13 +162,14 @@ def slovni_vyhodnoceni(pokusu: int):
         return "bad, you should train ;-)"
 
 def main():
-    #generuj náhodné číslo
-    tajne_cislo = generuj_nahodne_unikatni()
-    print(tajne_cislo)
-    #uvítej uživatele
-    uvitani()
-    pocet_pokusu = 0
+    pocet_her = 0
     while True:
+        uvitani(pocet_her)       #uvítej uživatele
+        pocet_her += 1
+        #generuj náhodné číslo
+        tajne_cislo = generuj_nahodne_unikatni()
+        print(tajne_cislo)
+        pocet_pokusu = 0
         while True:
             print("-" * 47)
             if pocet_pokusu == 0:
@@ -171,13 +188,13 @@ def main():
                         f"You won in time {vysledny_cas_formated}",
                         sep="\n")
                     uzivatel = input("Please input your username to log your effort :-) : ")
-                    zaloguj_vysledek(os.getcwd(), uzivatel, date.today(), pocet_pokusu, vysledny_cas_formated)
+                    zaloguj_vysledek(os.getcwd(), uzivatel, str(date.today()), pocet_pokusu, vysledny_cas_formated)
                     break
                 else:
                     print(pocet_bulls_a_cows(tajne_cislo, cislo_pokus)) #pocet_bulls_a_cows
         if not (input("Would you like to to play again? [y]yes, [n]no: ").lower()) == "y":
             break
-
+            
 
 if __name__ == "__main__":
     main()
