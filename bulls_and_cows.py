@@ -33,12 +33,14 @@ def zaloguj_vysledek(log_cesta: str, uzivatel: str, datum: str, pocet_pokusu: in
     """
     Zapíše statistky ze hry do logu
     """
-    with open(os.path.join(log_cesta + "log_bulls_and_cows.csv"), mode="a+") as log_file:
-        a = os.path.join(log_cesta + "log_bulls_and_cows")
-        zapisovac = csv.writer(log_file)
-        if not (log_file.readline()[:5] == "datum"):   #test na existenci hlavičky
-            zapisovac.writerow(("datum", "uzivatel", "pocet_pokusu", "cas"))
-        zapisovac.writerow((datum, uzivatel, pocet_pokusu, cas))
+    with open(os.path.join(log_cesta, "log_bulls_and_cows.csv"), mode="a+", newline="\n", encoding='utf-8') as log_file:
+        writer = csv.writer(log_file, delimiter=",")
+        log_file.seek(0)
+        reader = csv.reader(log_file, delimiter=",")
+        header = ["datum", "uzivatel", "pocet_pokusu", "cas"]
+        if next(reader, None) is None: #test na existenci hlavičky    
+            writer.writerow(header)
+        writer.writerow((datum, uzivatel, pocet_pokusu, cas))
         
 #třeba doladit
 def generuj_nahodne_unikatni() -> str:
